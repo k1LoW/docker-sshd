@@ -79,6 +79,7 @@ if [ -n "${SSH_USERS}" ]; then
         getent passwd ${_NAME} >/dev/null 2>&1 || adduser -D -u ${_UID} -G ${_NAME} -s '' ${_NAME}
         passwd -u ${_NAME} || true
         echo "${_NAME}:${_NAME}" | chpasswd
+        echo "${_NAME} ALL=(ALL)" >> /etc/sudoers
     done
 else
     # Warn if no authorized_keys
