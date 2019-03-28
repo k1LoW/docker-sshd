@@ -24,7 +24,7 @@ print_fingerprints() {
     local BASE_DIR=${1-'/etc/ssh'}
     for item in dsa rsa ecdsa ed25519; do
         echo ">>> Fingerprints for ${item} host key"
-        ssh-keygen -E md5 -lf ${BASE_DIR}/ssh_host_${item}_key 
+        ssh-keygen -E md5 -lf ${BASE_DIR}/ssh_host_${item}_key
         ssh-keygen -E sha256 -lf ${BASE_DIR}/ssh_host_${item}_key
         ssh-keygen -E sha512 -lf ${BASE_DIR}/ssh_host_${item}_key
     done
@@ -78,6 +78,7 @@ if [ -n "${SSH_USERS}" ]; then
         getent group ${_NAME} >/dev/null 2>&1 || addgroup -g ${_GID} ${_NAME}
         getent passwd ${_NAME} >/dev/null 2>&1 || adduser -D -u ${_UID} -G ${_NAME} -s '' ${_NAME}
         passwd -u ${_NAME} || true
+        echo "${_NAME}:${_NAME}" | chpasswd
     done
 else
     # Warn if no authorized_keys
